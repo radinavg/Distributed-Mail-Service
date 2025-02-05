@@ -1,38 +1,96 @@
-distributed systems lab
-=======================
+# 📧 Distributed Mail Service
 
-Using gradle
-------------
+## Project Overview
+This project implements a basic email system with distributed architecture. The system comprises a message transfer protocol (DMTP), a message access protocol (DMAP), and multithreaded servers for handling email exchange. It is designed as part of the Distributed Systems Lab coursework at TU Wien to demonstrate concepts like socket communication, multithreading, and concurrent programming.
 
-### Compile & Test
+## Key Features
+- **Custom Email Protocols:** Implements DMTP for message transfer and DMAP for message access.
+- **Server Architecture:**
+  - Transfer Server: Routes messages between users and mailbox servers.
+  - Mailbox Server: Manages email storage and user data.
+  - Monitoring Server: Tracks server usage and message statistics.
+- **Multithreaded Design:** Supports concurrent client connections using thread pools.
+- **Protocol Simulation:** Use of plain-text TCP communication with tools like `netcat` or PuTTY.
 
-Gradle is the build tool we are using. Here are some instructions:
+## Tech Stack
+- **Language:** Java 11
+- **Framework:** Gradle for build and dependency management
+- **Libraries:** Standard Java concurrency and networking packages.
 
-Compile the project using the gradle wrapper:
+## Setup Instructions
 
-    ./gradlew assemble
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/radinavg/Distributed-Mail-Service.git
+   ```
 
-Compile and run the tests:
+2. **Build the Project**
+   - Ensure Java 11+ is installed.
+   - Use Gradle to compile the project:
+     ```bash
+     ./gradlew build
+     ```
 
-    ./gradlew build
+3. **Run the Servers**
+   - Start the monitoring server:
+     ```bash
+     ./gradlew --console=plain run-monitoring
+     ```
+   - Start the transfer server:
+     ```bash
+     ./gradlew --console=plain run-transfer
+     ```
+   - Start the mailbox server:
+     ```bash
+     ./gradlew --console=plain run-mailbox
+     ```
 
-This command will inevitably run tests twice, once each Test Class individually, and once through the Test Suite (`Lab1Suite`).
-Therefore, you can run individual tests or the test suite by executing:
+4. **Compile & Test**
+   - Compile the project using Gradle:
+     ```bash
+     ./gradlew assemble
+     ```
+   - Compile and run the tests:
+     ```bash
+     ./gradlew build
+     ```
+   - Run specific test suites:
+     ```bash
+     ./gradlew test --tests dslab.Lab1Suite
+     ```
+   - Run individual tests, e.g.:
+     ```bash
+     ./gradlew test --tests dslab.transfer.TransferServerTest
+     ```
 
-    ./gradlew test --tests dslab.Lab1Suite
+5. **Run the Applications**
+   - List available tasks:
+     ```bash
+     ./gradlew tasks --all
+     ```
+   - Run a specific application, e.g., monitoring server:
+     ```bash
+     ./gradlew --console=plain run-monitoring
+     ```
 
-Or individual tests, for example:
+## Usage Examples
+- **✉️ Send Email via DMTP:**
+  ```
+  begin
+  to trillian@earth.planet
+  from zaphod@univer.ze
+  subject Hello
+  data Greetings from Zaphod
+  send
+  quit
+  ```
 
-    ./gradlew test --tests dslab.transfer.TransferServerTest
-
-### Run the applications
-
-The gradle config contains several tasks that start application components for you.
-You can list them with
-
-    ./gradlew tasks --all
-
-And search for 'Other tasks' starting with `run-`. For example, to run the monitoring server, execute:
-(the `--console=plain` flag disables CLI features, like color output, that may break the console output when running a interactive application)
-
-    ./gradlew --console=plain run-monitoring
+- **📥 Access Email via DMAP:**
+  ```
+  login zaphod 12345
+  list
+  show 1
+  delete 1
+  logout
+  quit
+  ```
